@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
+import SearchFilter from "./components/SearchFilter";
 import type { Todo } from "./types/todo";
 import * as todoApi from "./services/api";
+import { useToast } from "./contexts/ToastContext";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'completed'>('all');
+  const { showToast } = useToast();
 
   useEffect(() => {
     fetchTodos();
@@ -25,9 +29,8 @@ function App() {
         expanded: false
       }));
       setTodos(mappedTodos);
-      setError(null);
     } catch (err) {
-      setError('Failed to fetch todos');
+      showToast('Failed to load todos', 'error');
       console.error(err);
     } finally {
       setLoading(false);
@@ -47,8 +50,9 @@ function App() {
         expanded: false
       };
       setTodos([todoWithUI, ...todos]);
+      showToast('Todo added successfully', 'success');
     } catch (err) {
-      setError('Failed to create todo');
+      showToast('Failed to create todo', 'error');
       console.error(err);
     }
   };
@@ -57,8 +61,9 @@ function App() {
     try {
       await todoApi.deleteTodo(id);
       setTodos(todos.filter((todo) => todo.id !== id));
+      showToast('Todo deleted successfully', 'success');
     } catch (err) {
-      setError('Failed to delete todo');
+      showToast('Failed to delete todo', 'error');
       console.error(err);
     }
   };
@@ -76,8 +81,31 @@ function App() {
           todo.id === id ? { ...todo, completed: updated.completed } : todo
         )
       );
+      showToast(updated.completed ? 'Todo marked as complete' : 'Todo marked as incomplete', 'info');
     } catch (err) {
-      setError('Failed to update todo');
+      showToast('Failed to update todo', 'error');
+      console.error(err);
+    }
+  };
+
+  const editTodo = async (id: number, newTitle: string): Promise<void> => {
+    if (!newTitle.trim()) {
+      showToast('Todo title cannot be empty', 'error');
+      return;
+    }
+
+    try {
+      const updated = await todoApi.updateTodo(id, {
+        title: newTitle.trim()
+      });
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, title: updated.title } : todo
+        )
+      );
+      showToast('Todo updated successfully', 'success');
+    } catch (err) {
+      showToast('Failed to update todo', 'error');
       console.error(err);
     }
   };
@@ -90,8 +118,23 @@ function App() {
     );
   };
 
+  // Filter todos based on search query and filter status
+  const filteredTodos = useMemo(() => {
+    return todos.filter(todo => {
+      // Search filter (case-insensitive)
+      const matchesSearch = todo.title.toLowerCase().includes(searchQuery.toLowerCase());
+
+      // Status filter
+      const matchesStatus =
+        filterStatus === 'all' ? true :
+          filterStatus === 'active' ? !todo.completed :
+            todo.completed;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [todos, searchQuery, filterStatus]);
+
   if (loading && todos.length === 0) return <div className="container">Loading...</div>;
-  if (error) return <div className="container" style={{ color: 'red' }}>Error: {error}</div>;
 
   return (
     <div className="container">
@@ -99,12 +142,28 @@ function App() {
 
       <AddTodo onAddTodo={addTodo} />
 
-      <TodoList
-        todos={todos}
-        onDelete={deleteTodo}
-        onToggle={toggleTodo}
-        onToggleDescription={toggleDescription}
+      <SearchFilter
+        searchQuery={searchQuery}
+        filterStatus={filterStatus}
+        onSearchChange={setSearchQuery}
+        onFilterChange={setFilterStatus}
+        totalCount={todos.length}
+        filteredCount={filteredTodos.length}
       />
+
+      {filteredTodos.length === 0 && todos.length > 0 ? (
+        <div className="empty-state">
+          No todos found. Try adjusting your search or filter.
+        </div>
+      ) : (
+        <TodoList
+          todos={filteredTodos}
+          onDelete={deleteTodo}
+          onToggle={toggleTodo}
+          onEdit={editTodo}
+          onToggleDescription={toggleDescription}
+        />
+      )}
     </div>
   );
 }

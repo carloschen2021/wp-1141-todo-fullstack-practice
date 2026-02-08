@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-// Update with correct backend URL if different
-const API_URL = 'http://localhost:3000/api/todos';
+// Use environment variable for production, fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const api = axios.create({
-    baseURL: API_URL,
+    baseURL: `${API_BASE_URL}/api/todos`,
 });
 
 export const getTodos = async () => {

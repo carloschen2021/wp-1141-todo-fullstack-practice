@@ -14,7 +14,7 @@ export const getTodos = async (req: Request, res: Response) => {
         });
         res.json(todos);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch todos' });
+        return res.status(500).json({ error: 'Failed to fetch todos' });
     }
 };
 
@@ -27,9 +27,9 @@ export const createTodo = async (req: Request, res: Response) => {
         res.json(todo);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: error.errors });
+            return res.status(400).json({ error: error.issues });
         } else {
-            res.status(500).json({ error: 'Failed to create todo' });
+            return res.status(500).json({ error: 'Failed to create todo' });
         }
     }
 };
@@ -45,9 +45,9 @@ export const updateTodo = async (req: Request, res: Response) => {
         res.json(todo);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: error.errors });
+            return res.status(400).json({ error: error.issues });
         } else {
-            res.status(500).json({ error: 'Failed to update todo' });
+            return res.status(500).json({ error: 'Failed to update todo' });
         }
     }
 };
@@ -60,6 +60,6 @@ export const deleteTodo = async (req: Request, res: Response) => {
         });
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ error: 'Failed to delete todo' });
+        return res.status(500).json({ error: 'Failed to delete todo' });
     }
 };

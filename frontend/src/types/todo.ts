@@ -13,4 +13,5 @@ export type AddTodoHandler = (todo: Todo) => void;
 export type DeleteTodoHandler = (id: number) => void;
 export type ToggleTodoHandler = (id: number) => void;
 export type ToggleDescriptionHandler = (id: number) => void;
+export type EditTodoHandler = (id: number, newTitle: string) => void;
 

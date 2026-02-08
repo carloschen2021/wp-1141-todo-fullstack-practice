@@ -1,14 +1,15 @@
 import TodoItem from "./TodoItem";
-import type { Todo, DeleteTodoHandler, ToggleTodoHandler, ToggleDescriptionHandler } from "../types/todo";
+import type { Todo, DeleteTodoHandler, ToggleTodoHandler, ToggleDescriptionHandler, EditTodoHandler } from "../types/todo";
 
 interface TodoListProps {
   todos: Todo[];
-  onDelete: DeleteTodoHandler;
   onToggle: ToggleTodoHandler;
+  onDelete: DeleteTodoHandler;
+  onEdit: EditTodoHandler;
   onToggleDescription: ToggleDescriptionHandler;
 }
 
-const TodoList = ({ todos, onDelete, onToggle, onToggleDescription }: TodoListProps) => {
+const TodoList = ({ todos, onToggle, onDelete, onEdit, onToggleDescription }: TodoListProps) => {
   return (
     <div className="todo-list">
       {todos.map((todo, index) => (
@@ -17,6 +18,7 @@ const TodoList = ({ todos, onDelete, onToggle, onToggleDescription }: TodoListPr
             todo={todo}
             onToggle={onToggle}
             onDelete={onDelete}
+            onEdit={onEdit}
             onToggleDescription={onToggleDescription}
           />
           {index < todos.length - 1 && <div className="separator" />}
