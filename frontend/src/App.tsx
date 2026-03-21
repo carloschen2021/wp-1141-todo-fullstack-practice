@@ -6,6 +6,7 @@ import SearchFilter from "./components/SearchFilter";
 import type { Todo } from "./types/todo";
 import * as todoApi from "./services/api";
 import { useToast } from "./contexts/ToastContext";
+import { useTheme } from "./contexts/ThemeContext";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -13,6 +14,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'completed'>('all');
   const { showToast } = useToast();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     fetchTodos();
@@ -138,7 +140,16 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="title">todo list</h1>
+      <div className="title-row">
+        <h1 className="title">todo list</h1>
+        <button
+          className="theme-toggle-btn"
+          onClick={toggleTheme}
+          title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+        >
+          {theme === 'light' ? '🌙' : '☀️'}
+        </button>
+      </div>
 
       <AddTodo onAddTodo={addTodo} />
 
