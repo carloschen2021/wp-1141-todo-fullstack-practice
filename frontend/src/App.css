@@ -19,8 +19,8 @@
 }
 
 .toast {
-  background: #fff;
-  border: 2px solid #000;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   padding: 16px 20px;
   display: flex;
@@ -45,31 +45,31 @@
 
 .toast-success {
   border-color: #4CAF50;
-  background-color: #f1f8f4;
+  background-color: var(--bg-card);
 }
 
 .toast-error {
   border-color: #ff4444;
-  background-color: #fff5f5;
+  background-color: var(--bg-card);
 }
 
 .toast-info {
   border-color: #2196F3;
-  background-color: #f0f7ff;
+  background-color: var(--bg-card);
 }
 
 .toast-message {
   flex: 1;
   font-size: 14px;
   font-weight: 500;
-  color: #000;
+  color: var(--text-primary);
 }
 
 .toast-close {
   background: none;
   border: none;
   font-size: 18px;
-  color: #666;
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 0;
   width: 24px;
@@ -81,13 +81,7 @@
 }
 
 .toast-close:hover {
-  color: #000;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f5dc;
-  min-height: 100vh;
+  color: var(--text-primary);
 }
 
 .container {
@@ -96,20 +90,46 @@ body {
   padding: 20px;
 }
 
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 30px;
+}
+
 .title {
   text-align: center;
   font-size: 2.5rem;
   font-weight: bold;
-  color: #000;
-  margin-bottom: 30px;
+  color: var(--text-primary);
+}
+
+.theme-toggle-btn {
+  position: absolute;
+  right: 0;
+  padding: 8px 12px;
+  background: var(--theme-toggle-bg);
+  border: 1px solid var(--theme-toggle-border);
+  border-radius: 20px;
+  color: var(--theme-toggle-text);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  transition: background-color 0.2s, border-color 0.3s;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--theme-toggle-hover);
 }
 
 .add-todo-section {
-  background: #fff;
-  border: 1px solid #000;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .input-group {
@@ -121,44 +141,59 @@ body {
 .todo-input {
   flex: 1;
   padding: 12px;
-  border: 1px solid #000;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 16px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.todo-input::placeholder {
+  color: var(--text-secondary);
 }
 
 .add-btn {
   padding: 12px 24px;
   background: transparent;
-  border: 1px solid #000;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
-  color: #000;
+  color: var(--text-primary);
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, border-color 0.3s ease, color 0.3s ease;
 }
 
 .add-btn:hover {
-  background-color: #f0f0f0;
+  background-color: var(--bg-hover);
 }
 
 .description-input {
   width: 100%;
   padding: 12px;
-  border: 1px solid #000;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 16px;
   resize: vertical;
   min-height: 80px;
   font-family: inherit;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.description-input::placeholder {
+  color: var(--text-secondary);
 }
 
 /* Search and Filter Section */
 .search-filter-section {
-  background: #fff;
-  border: 1px solid #000;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .search-container {
@@ -169,11 +204,17 @@ body {
 .search-input {
   width: 100%;
   padding: 12px 40px 12px 12px;
-  border: 1px solid #000;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 16px;
   outline: none;
-  transition: border-color 0.2s;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: border-color 0.2s, background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
 }
 
 .search-input:focus {
@@ -189,14 +230,14 @@ body {
   background: none;
   border: none;
   font-size: 18px;
-  color: #666;
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 5px 10px;
   transition: color 0.2s;
 }
 
 .clear-search-btn:hover {
-  color: #000;
+  color: var(--text-primary);
 }
 
 .filter-buttons {
@@ -209,9 +250,9 @@ body {
   flex: 1;
   padding: 10px 20px;
   background: transparent;
-  border: 1px solid #000;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
-  color: #000;
+  color: var(--text-primary);
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
@@ -219,37 +260,39 @@ body {
 }
 
 .filter-btn:hover {
-  background-color: #f0f0f0;
+  background-color: var(--bg-hover);
 }
 
 .filter-btn.active {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--filter-active-bg);
+  color: var(--filter-active-text);
 }
 
 .filter-info {
   text-align: center;
   font-size: 14px;
-  color: #666;
+  color: var(--text-secondary);
   margin-top: 10px;
 }
 
 .empty-state {
-  background: #fff;
-  border: 1px solid #000;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 40px 20px;
   text-align: center;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 16px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .todo-list {
   max-height: calc(100vh - 300px);
   overflow-y: auto;
-  border: 1px solid #000;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: #fff;
+  background: var(--bg-card);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .todo-item {
@@ -261,7 +304,7 @@ body {
 }
 
 .todo-item:hover {
-  background-color: #f9f9f9;
+  background-color: var(--bg-hover);
 }
 
 .todo-checkbox {
@@ -274,7 +317,7 @@ body {
 .todo-text {
   flex: 1;
   font-size: 16px;
-  color: #000;
+  color: var(--text-primary);
 }
 
 .delete-btn {
@@ -316,6 +359,9 @@ body {
   font-size: 16px;
   outline: none;
   margin-right: 10px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .todo-edit-input:focus {
@@ -365,11 +411,12 @@ body {
 
 .todo-description {
   padding: 15px 20px 15px 53px;
-  background-color: #f8f8f8;
+  background-color: var(--bg-description);
   font-size: 14px;
-  color: #333;
+  color: var(--text-description);
   line-height: 1.5;
   display: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .todo-description.show {
@@ -378,7 +425,7 @@ body {
 
 .separator {
   height: 1px;
-  background-color: #ddd;
+  background-color: var(--border-light);
   margin: 0 20px;
 }
 
@@ -388,15 +435,15 @@ body {
 }
 
 .todo-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--scrollbar-track);
   border-radius: 4px;
 }
 
 .todo-list::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 .todo-list::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--text-secondary);
 }
